@@ -149,13 +149,10 @@ def face_recognition(I_target, I_template):
             if s>0.65:
                 tmp_bounding_boxes[cnt,:] = [j,i,s]
                 cnt+=1
-                
-    bounding_boxes = non_maximum_suppression(tmp_bounding_boxes[:cnt],(h_tem,w_tem))
-                
-    return bounding_boxes
-
-def non_maximum_suppression(bb_set,box_size):
-    # this function do the non maximum suppression for given bounding box set
+    # in previous code, I made this block as a function. However, there is a requirement of TAs 
+    # to implement the face detection within the given functions, I merge it and thus it looks like unnatural
+    bb_set = tmp_bounding_boxes[:cnt]
+    box_size = (h_tem,w_tem)
     sorted_bb_set = sorted(bb_set,key = lambda x : x[2], reverse = True)
     bounding_boxes = np.zeros((3,))
     bounding_boxes = np.r_[[bounding_boxes],[sorted_bb_set[0]]]
@@ -163,32 +160,68 @@ def non_maximum_suppression(bb_set,box_size):
         target_bb = list(sorted_bb_set[i])
         isDiscared = False
         for j in range(len(sorted_bb_set)):
-            if np.abs(getIOU(target_bb,bb_set[j],box_size[0],box_size[1]))>0.5:
+            # print(str(i) + ", " + str(j))
+            cor_1,cor_2 = target_bb,bb_set[j]
+            h = box_size[0]
+            w = box_size[1]
+            box1_area = h*w
+            box2_area = h*w
+
+            x1 = max(cor_1[0], cor_2[0])
+            y1 = max(cor_1[1], cor_2[1])
+            x2 = min(cor_1[0] + w, cor_2[0] + w)
+            y2 = min(cor_1[1]+ h, cor_2[1] + h)
+
+            w = max(0, x2 - x1 + 1)
+            h = max(0, y2 - y1 + 1)
+
+            inter = w * h
+            iou = inter / (box1_area + box2_area - inter)
+            
+            if np.abs(iou)>0.5:
                 if target_bb[2] < bb_set[j,2] : 
                     isDiscared = True
         if not isDiscared:
             bounding_boxes = np.r_[bounding_boxes,[target_bb]]
     bounding_boxes = bounding_boxes[1:]
+                    
     return bounding_boxes
 
-def getIOU(cor_1,cor_2,h,w):
-    # this is my own function which calculates the IOU of BB
-    box1_area = h*w
-    box2_area = h*w
+# def non_maximum_suppression(bb_set,box_size):
+#     sorted_bb_set = sorted(bb_set,key = lambda x : x[2], reverse = True)
+#     bounding_boxes = np.zeros((3,))
+#     bounding_boxes = np.r_[[bounding_boxes],[sorted_bb_set[0]]]
+#     for i in range(len(sorted_bb_set)):
+#         # print(str(i) + ": " + str(len(bounding_boxes)))
+#         target_bb = list(sorted_bb_set[i])
+#         isDiscared = False
+#         for j in range(len(sorted_bb_set)):
+#             if np.abs(getIOU(target_bb,bb_set[j],box_size[0],box_size[1]))>0.5:
+#                 if target_bb[2] < bb_set[j,2] : 
+#                     isDiscared = True
+#         if not isDiscared:
+#             bounding_boxes = np.r_[bounding_boxes,[target_bb]]
+#     bounding_boxes = bounding_boxes[1:]
+#     return bounding_boxes
 
-    # obtain x1, y1, x2, y2 of the intersection
-    x1 = max(cor_1[0], cor_2[0])
-    y1 = max(cor_1[1], cor_2[1])
-    x2 = min(cor_1[0] + w, cor_2[0] + w)
-    y2 = min(cor_1[1]+ h, cor_2[1] + h)
+# def getIOU(cor_1,cor_2,h,w):
+#     # this is my own function which calculates the IOU of BB
+#     box1_area = h*w
+#     box2_area = h*w
 
-    # compute the width and height of the intersection
-    w = max(0, x2 - x1 + 1)
-    h = max(0, y2 - y1 + 1)
+#     # obtain x1, y1, x2, y2 of the intersection
+#     x1 = max(cor_1[0], cor_2[0])
+#     y1 = max(cor_1[1], cor_2[1])
+#     x2 = min(cor_1[0] + w, cor_2[0] + w)
+#     y2 = min(cor_1[1]+ h, cor_2[1] + h)
 
-    inter = w * h
-    iou = inter / (box1_area + box2_area - inter)
-    return iou
+#     # compute the width and height of the intersection
+#     w = max(0, x2 - x1 + 1)
+#     h = max(0, y2 - y1 + 1)
+
+#     inter = w * h
+#     iou = inter / (box1_area + box2_area - inter)
+#     return iou
 
 
 def visualize_face_detection(I_target, bounding_boxes, box_size):
@@ -230,11 +263,12 @@ def visualize_face_detection(I_target, bounding_boxes, box_size):
 
 if __name__=='__main__':
     # correct the path before the submission
-    im = cv2.imread('./cameraman.tif', 0)
+    # im = cv2.imread('./cameraman.tif', 0)
 
-    im = cv2.imread('./einstein.png',0)
+    # im = cv2.imread('./einstein.png',0)
 
-    hog = extract_hog(im, visualize=True)
+    # hog = extract_hog(im, visualize=True)
+    
     I_target= cv2.imread('target.png', 0) # MxN image
 
     I_template = cv2.imread('template.png', 0) # mxn  face template
