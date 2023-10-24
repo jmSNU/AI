@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.4.25)  15 OCT 2023 23:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.4.25)  22 OCT 2023 15:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -739,50 +739,35 @@ Package hyperref Info: Link coloring OFF on input line 34.
 \@outlinefile=\write5
 \openout5 = `report.out'.
 
-<../figures/hog1.png, id=15, 462.528pt x 346.896pt>
-File: ../figures/hog1.png Graphic file (type png)
-<use ../figures/hog1.png>
-Package pdftex.def Info: ../figures/hog1.png  used on input line 45.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
-<../figures/hog2.png, id=17, 462.528pt x 346.896pt>
-File: ../figures/hog2.png Graphic file (type png)
-<use ../figures/hog2.png>
-Package pdftex.def Info: ../figures/hog2.png  used on input line 48.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
-<../figures/hog3.png, id=18, 462.528pt x 346.896pt>
-File: ../figures/hog3.png Graphic file (type png)
-<use ../figures/hog3.png>
-Package pdftex.def Info: ../figures/hog3.png  used on input line 51.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
-<../figures/hog4.png, id=19, 462.528pt x 346.896pt>
-File: ../figures/hog4.png Graphic file (type png)
-<use ../figures/hog4.png>
-Package pdftex.def Info: ../figures/hog4.png  used on input line 54.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
-<../figures/result_face_detection.png, id=20, 173.448pt x 97.5645pt>
-File: ../figures/result_face_detection.png Graphic file (type png)
-<use ../figures/result_face_detection.png>
-Package pdftex.def Info: ../figures/result_face_detection.png  used on input line 64.
-(pdftex.def)             Requested size: 121.41277pt x 68.29466pt.
- [1
+<./figures/result_face_detection.png, id=11, 173.448pt x 97.5645pt>
+File: ./figures/result_face_detection.png Graphic file (type png)
+<use ./figures/result_face_detection.png>
+Package pdftex.def Info: ./figures/result_face_detection.png  used on input line 43.
+(pdftex.def)             Requested size: 260.17136pt x 146.34636pt.
 
-{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <../figures/hog1.png> <../figures/hog2.png> <../figures/hog3.png> <../figures/hog4.png> <../figures/result_face_detection.png>] (./report.aux)
+Overfull \hbox (37.88878pt too wide) in paragraph at lines 56--57
+[]\OT1/cmr/m/n/10 I would like to men-tion that I im-ple-mented \OT1/cmr/bx/n/10 face[]recognition() \OT1/cmr/m/n/10 by mod-u-lar-iz-ing the \OT1/cmr/bx/n/10 non[]maximum[]suppression()
+ []
+
+[1
+
+{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figures/result_face_detection.png>] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E2D4BE4C797EF73A8BE3F26A04606C6B;275.
+(rerunfilecheck)             Checksum: 7F282975E59722B9CB4A8C873F52CCD8;116.
  ) 
 Here is how much of TeX's memory you used:
- 35854 strings out of 476025
- 872070 string characters out of 5790017
- 1860388 words of memory out of 5000000
- 55763 multiletter control sequences out of 15000+600000
- 514403 words of font info for 39 fonts, out of 8000000 for 9000
+ 35817 strings out of 476025
+ 871353 string characters out of 5790017
+ 1861388 words of memory out of 5000000
+ 55736 multiletter control sequences out of 15000+600000
+ 514104 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,8n,103p,771b,909s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
-Output written on report.pdf (1 page, 928750 bytes).
+ 99i,8n,103p,771b,907s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+Output written on report.pdf (1 page, 101298 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
- 9 named destinations out of 1000 (max. 500000)
- 54 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 45 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
+ 4 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

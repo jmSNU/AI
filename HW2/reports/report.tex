@@ -34,34 +34,26 @@
 \begin{document}
 \maketitle
 
-\section{HOG Feature Extraction}
-
-In this section, I will introduce the results of \textbf{extract\_hog()}. The \textbf{extract\_hog()} function runs for at least 10 seconds for each image.
-
-\begin{figure}[!h]
-    \centering
-    \subfigure[]{
-        \includegraphics[scale=0.4]{../figures/hog1.png}
-    }
-    \subfigure[]{
-        \includegraphics[scale=0.4]{../figures/hog2.png}
-    }
-    \subfigure[]{
-        \includegraphics[scale=0.4]{../figures/hog3.png}
-    }
-    \subfigure[]{
-        \includegraphics[scale=0.4]{../figures/hog4.png}
-    }
-    \caption{Results of HOG features extracted by \textbf{extract\_hog()}. Each HOG feature is derived from (a) cameraman.tif, (b) cat.tif, (c) einstein.png, (d) twins.tif.}
-\end{figure}
-
 \section{Face Detection}
+In this section, I will discuss the \textbf{face\_recognition()} method.
 
-In this section, I will present the results of \textbf{face\_recognition()}. I have implemented additional functions that were not specified in the original requirements: \textbf{non\_maximum\_suppression()} and \textbf{getIOU()}. These functions were introduced to enhance the readability and functionality of the code. Despite the efforts to optimize the code and reduce execution time, the process of creating the bounding box set remains a challenging task. The approximate running time of \textbf{face\_recognition()} and its visualization is approximately 13 minutes. We selected a threshold of 0.65 for the normalized cross-correlation (NCC) score based on empirical observations.
-
+First, let's take a look at the result of \textbf{face\_recognition()}:
 \begin{figure}[!h]
-    \centering
-    \includegraphics[scale=0.7]{../figures/result_face_detection.png}
+    \begin{center}
+        \includegraphics[scale=1.5]{./figures/result_face_detection.png}
+    \end{center}
+    \caption{Result of \textbf{face\_recognition()} applied to the given target and template.}
 \end{figure}
+
+As you can see, \textbf{face\_recognition()} produces highly accurate face detection results. 
+
+Now, let me provide a brief explanation of how \textbf{face\_recognition()} works. The process consists of two main steps: collecting bounding boxes and applying non-maximum suppression. 
+
+We begin by extracting HOG features from patches obtained from both the template and the target. These features are used to calculate the correlation or dot product after subtracting their averages. We save the coordinates of the top-left corner of bounding boxes along with their respective scores, provided their scores exceed 0.65.
+
+Subsequently, we reduce the number of bounding boxes through non-maximum suppression. This is achieved by using the Intersection over Union (IoU) metric to determine whether bounding boxes are neighbors. The algorithm for non-maximum suppression is adapted from the article specified in the instructions. Calculating the IoU was also informed by a different article which proposed the specification. I had to adjust the IoU calculation code to accommodate the requirement that both input boxes have the same size. After applying non-maximum suppression, we obtain the final bounding boxes by removing the first element added for implementation purposes.
+
+I would like to mention that I implemented \textbf{face\_recognition()} by modularizing the \textbf{non\_maximum\_suppression()} and \textbf{getIOU()} functions. However, the TAs requested that I implement \textbf{face\_recognition()} without introducing new functions. As a result, I embedded the code of these functions directly into \textbf{face\_recognition()}. This may lead to the redundancy of variables, and some might find the implementation less streamlined.
+
 
 \end{document}

@@ -111,9 +111,15 @@ def visualize_hog(im, hog, cell_size, block_size):
 
 def extract_hog(im, visualize=False, cell_size=8, block_size=2):
     # TODO: implement this function
-    im = cv2.cvtColor(im,cv2.COLOR_BGR2RGB)
-    im = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-    img = cv2.normalize(im, None, 0.0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)# normalize
+    
+    if im.shape[-1] == 3:  # Assumes a 3-channel color image
+    # Convert color image to grayscale
+        gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    else:
+        # Image is already grayscale, no need to convert
+        gray_image = im
+    
+    img = cv2.normalize(gray_image, None, 0.0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)# normalize
     filter_x, filter_y = get_differential_filter()
     img_filtered_x = filter_image(img,filter_x)
     img_filtered_y = filter_image(img,filter_y)
@@ -134,7 +140,6 @@ def face_recognition(I_target, I_template):
     h_tem, w_tem = I_template.shape
     h,w = I_target.shape
     
-
     tmp_bounding_boxes = np.zeros((h*w,3))
     cnt = 0
     for i in range(h - h_tem):
@@ -263,11 +268,11 @@ def visualize_face_detection(I_target, bounding_boxes, box_size):
 
 if __name__=='__main__':
     # correct the path before the submission
-    # im = cv2.imread('./cameraman.tif', 0)
+    # im = cv2.imread('cameraman.tif', 0)
 
-    # im = cv2.imread('./einstein.png',0)
+    im = cv2.imread('einstein.png',0)
 
-    # hog = extract_hog(im, visualize=True)
+    hog = extract_hog(im, visualize=True)
     
     I_target= cv2.imread('target.png', 0) # MxN image
 
