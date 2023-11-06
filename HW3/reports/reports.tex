@@ -185,9 +185,31 @@ One can notice that $\Delta \boldsymbol{\omega}$ with regularization is much sma
 \end{figure}
 
 \section{LR with Regularization: A Probabilistic Perspective}
+\begin{align*}
+    \text{Pr}(\boldsymbol{\omega}) &= \mathcal{N}(\boldsymbol{0},\frac{1}{\lambda} \boldsymbol{I}) \\ &= \frac{\lambda^{N/2}}{2\pi^{N/2}}\exp\left({-\frac{1}{2}\boldsymbol{\omega}^T \lambda \boldsymbol{\omega}}\right)
+\end{align*}
 
+\begin{align*}
+    &t^{(i)} = \boldsymbol{\omega}^T \boldsymbol{x}^{(i)} + \epsilon^{(i)} \And
+    \text{Pr}(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left( -{\epsilon^{(i)}}^2/2\sigma^2\right) \\ &\Rightarrow \text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right) = \frac{1}{\sqrt(2\pi)\sigma} \exp\left(-(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)})^2/2\sigma^2\right)
+\end{align*}
 
+\begin{align*}
+    \text{Pr}(\boldsymbol{t}\;|\; \boldsymbol{\omega}^T \boldsymbol{x}^{(i)}) &= \prod_{i=1}^N\text{Pr}(t^{(i)}\;|\;\boldsymbol{\omega}^T, \boldsymbol{x}) \\ &= \frac{1}{2\pi^{N/2}\sigma^N} \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^N (t^{(i)} - \boldsymbol{\omega}^T \boldsymbol{x}^{(i)})^2\right)
+\end{align*}
 
+From the discussion above, the posterior probability is following. 
+
+\begin{equation}
+    \text{Pr}(\boldsymbol{\omega}\;|\;\boldsymbol{x},\boldsymbol{t}) \propto \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^N \left(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)} \right)^2 - \frac{\lambda}{2} \boldsymbol{\omega}^T\boldsymbol{\omega}\right)
+    \label{eqn:pos}
+\end{equation}
+
+Minimizing (\ref{eqn:pos}) is equivalent to minimizing its logarithm.
+
+\begin{equation}
+    \log\left(\text{Pr}(\boldsymbol{\omega}\;|\;\boldsymbol{x},\boldsymbol{t})\right)
+\end{equation}
 \section{Logistic Regression}
 
 \end{document}
