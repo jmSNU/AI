@@ -191,7 +191,7 @@ One can notice that $\Delta \boldsymbol{\omega}$ with regularization is much sma
 
 \begin{align*}
     &t^{(i)} = \boldsymbol{\omega}^T \boldsymbol{x}^{(i)} + \epsilon^{(i)} \And
-    \text{Pr}(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left( -{\epsilon^{(i)}}^2/2\sigma^2\right) \\ &\Rightarrow \text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right) = \frac{1}{\sqrt(2\pi)\sigma} \exp\left(-(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)})^2/2\sigma^2\right)
+    \text{Pr}(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left( -{\epsilon^{(i)}}^2/2\sigma^2\right) \\ &\Rightarrow \text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)})^2/2\sigma^2\right)
 \end{align*}
 
 \begin{align*}
@@ -208,8 +208,39 @@ From the discussion above, the posterior probability is following.
 Minimizing (\ref{eqn:pos}) is equivalent to minimizing its logarithm.
 
 \begin{equation}
-    \log\left(\text{Pr}(\boldsymbol{\omega}\;|\;\boldsymbol{x},\boldsymbol{t})\right)
+    \log\left(\text{Pr}(\boldsymbol{\omega}\;|\;\boldsymbol{x},\boldsymbol{t})\right) \propto -\frac{1}{2\sigma^2}\sum_{i=1}^N\left(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)}\right)^2 - \frac{\lambda}{2}\boldsymbol{\omega}^T\boldsymbol{\omega}
+    \label{eqn:logPos}
 \end{equation}
+
+One can see from (\ref{eqn:logPos}) that maximizing logarithm of posterior is equivalent to minimizing the target function of linear regression with L2 regularization.
+
 \section{Logistic Regression}
+\begin{equation}
+    \log{L(\boldsymbol{\omega})} = -\sum_i\left[ t^{(i)}\log{\left(\frac{1}{1+e^{-\boldsymbol{\omega}^T\boldsymbol{x}^{(i)}}}\right)} + (1-t^{(i)})\log\left(\frac{e^{-\boldsymbol{\omega}^T\boldsymbol{x}^{(i)}}}{1+e^{\boldsymbol{\omega}^T\boldsymbol{x}^{(i)}}}\right)\right]
+    \label{eqn:MLE}
+\end{equation}
+
+To minimize (\ref{eqn:MLE}), one can differentiate it about $\omega$ to find the $\omega_0$ that makes the derivative zero. By denoting $P^{(n)} = ({1+e^{\boldsymbol{\omega}^T \boldsymbol{x}^{(n)}}})^{-1} = \sigma(\boldsymbol{\omega}^T\boldsymbol{x}^{(n)})$
+
+
+\begin{align*}
+    {\partial \over \partial \omega_i}\log{L(\boldsymbol{\omega})} &= -\sum_n{\partial \over \partial \omega_i}\left[t^{(n)}\log{P^{(n)}} + (1-t^{(n)})\log{(1-P^{(n)})}\right] \\ &= - \sum_n\left[\frac{t^{(n)}}{{P^{(n)}}} - \frac{1-t^{(n)}}{1-P^{(n)}}\right]\cdot {\partial P^{(n)} \over \partial \omega_i} \\ &= -\sum_n\left[t^{(n)}/P^{(n)} - (1-t^{(n)})/P^{(n)}\right]\cdot P^{(n)}(1-P^{(n)})\cdot {\partial \over \partial \omega_i} \boldsymbol{\omega}^T\boldsymbol{x}^{(n)} \\ &= -\sum_n\left[t^{(n)}(1-P^{(n)}) - (1-t^{(n)})P^{(n)} \right]x_i^{(n)} \\ &= - \sum_n(t^{(n)} - P^{(n)})x_i^{(n)} = 0
+\end{align*}
+Note that ${d\sigma(x)/ dx} = \sigma(x)(1-\sigma(x))$.
+The result of the last equation above can be written in vector form.
+
+\begin{equation}
+    \sum_n\left(t^{(n)} - \sigma(\boldsymbol{\omega}^T\boldsymbol{x})\right)\boldsymbol{x}^{(n)} = 0
+    \label{eqn:MLR}
+\end{equation}
+
+The equation (\ref{eqn:MLR}) can be written as following equation.
+
+\begin{equation}
+    \sum_n t^{(n)}\boldsymbol{x}^{(n)} = \sum_n\sigma(\boldsymbol{\omega}^T\boldsymbol{x})\boldsymbol{x}^{(n)}
+    \label{eqn:MLR2}
+\end{equation}
+
+Unfortunately, since sigmoid function $\sigma$ is non-linear function, the equation (\ref{eqn:MLR2}) is non-linear equation that doesn't have the closed form of solution in general.
 
 \end{document}
