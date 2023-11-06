@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{kotex}
 \usepackage{graphicx}
@@ -20,6 +20,9 @@
 \usepackage{bibunits}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{chngcntr}
+\counterwithin*{subsection}{section}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 
 \geometry{
     a4paper,
@@ -33,5 +36,157 @@
 
 \begin{document}
 \maketitle
+
+\section{Linear Regression}
+\subsection{}
+Let $f$ be the target function. I'll use the superscript with parenthesis to describe the n-th sample vector.
+\begin{equation}
+    f(\boldsymbol{\omega},\overline{\boldsymbol{x}^{(n)}}) = \sum_n\frac{1}{2}\left(t^{(n)} - \boldsymbol{\omega}^T \overline{\boldsymbol{x}^{(n)}}\right)^2
+\end{equation}
+
+To minimize $f$, differentiate it by $\boldsymbol{\omega}$ and find the $\boldsymbol{\omega}_0$ which makes the derivative zero. To make expression simple, I used the Einstein notation. 
+
+\begin{align*}
+    {\partial f \over \partial \omega_j} &= -(t^{(n)} - \boldsymbol{\omega}^T \overline{\boldsymbol{x}^{(n)}}) \cdot {\partial \over \partial \omega_j} \boldsymbol{\omega}^T \bar{\boldsymbol{x}}^{(n)} \\
+    &= -(t^{(n)} - \boldsymbol{\omega}^T \overline{\boldsymbol{x}^{(n)}}) x_j^{(n)}\\
+    &=0
+\end{align*}
+
+By enumerating the ${\partial f \over \partial \omega_j}$ horizontally, one can get ${\partial f \over \partial \boldsymbol{\omega}}$.
+
+\begin{equation}
+    \sum_n t^{(n)}\begin{pmatrix} x^{(n)}_1 \\ \vdots \\ x^{(n)}_M \end{pmatrix}^T = \sum_n \begin{pmatrix} \boldsymbol{\omega}^T \overline{\boldsymbol{x}^{(n)}}x_1^{(n)} \\ \vdots \\ \boldsymbol{\omega}^T \overline{\boldsymbol{x}^{(n)}}x_M^{(n)} \end{pmatrix}^T
+\end{equation}
+
+The left hand side is simply $\sum_n t^{(n)}\overline{\boldsymbol{x}^{(n)}}^T$. From the linearity of vector summation rule, the right hand side is $\left(\left(\sum_n \overline{\boldsymbol{x}^{(n)}} \cdot \overline{\boldsymbol{x}^{(n)}}^T\right)\boldsymbol{\omega}\right)^T$.
+By taking transpose to both sides, one can get the following equation.
+
+\begin{equation}
+    \left[\sum_n \overline{\boldsymbol{x}^{(n)}} \cdot \overline{\boldsymbol{x}^{(n)}}^T\right] \boldsymbol{\omega} = \sum_n t^{(n)}\overline{\boldsymbol{x}^{(n)}}
+\end{equation}
+
+Therefore, $\boldsymbol{A} = \sum_n \overline{\boldsymbol{x}^{(n)}} \cdot \overline{\boldsymbol{x}^{(n)}}^T$ and $\boldsymbol{b} = \sum_n t^{(n)} \overline{\boldsymbol{x}^{(n)}}$
+
+\subsection{}
+$\overline{\boldsymbol{x}^{(1)}} = (1,0)^T, t^{(1)} = 1.$ $\overline{\boldsymbol{x}^{(2)}} = (1,\epsilon)^T, t^{(2)} = 1.$ 
+$\boldsymbol{A} = \overline{\boldsymbol{x}^{(1)}} \cdot \overline{\boldsymbol{x}^{(1)}}^T + \overline{\boldsymbol{x}^{(1)}} \cdot \overline{\boldsymbol{x}^{(2)}}^T = \begin{pmatrix}
+2 & \epsilon \\ \epsilon & \epsilon^2
+\end{pmatrix}$
+$\boldsymbol{b} = \overline{\boldsymbol{x}^{(1)}} + \overline{\boldsymbol{x}^{(2)}} = (2,\epsilon)^T$. Since $\boldsymbol{A}$ is invertible(determinant is nonzero.), 
+
+\begin{align}
+    \boldsymbol{\omega} &= \boldsymbol{A}^{-1}\boldsymbol{b} \\ &= \frac{1}{\epsilon^2} \begin{pmatrix}
+        \epsilon^2 & -\epsilon \\ -\epsilon & 2
+        \end{pmatrix} \begin{pmatrix} 2 \\ \epsilon \end{pmatrix} \\ &= \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+\end{align}
+
+\subsection{}
+$\boldsymbol{A}$ is same to the above one. $\boldsymbol{b} = (1+\epsilon)\cdot \overline{\boldsymbol{x}^{(1)}} + \overline{\boldsymbol{x}^{(2)}} = (2 + \epsilon,\epsilon)^T $
+
+\begin{align}
+    \boldsymbol{\omega} &= \boldsymbol{A}^{-1}\boldsymbol{b} \\ &= \frac{1}{\epsilon^2} \begin{pmatrix}
+        \epsilon^2 & -\epsilon \\ -\epsilon & 2
+        \end{pmatrix} \begin{pmatrix} 2 + \epsilon \\ \epsilon \end{pmatrix} \\ &= \begin{pmatrix} 1+\epsilon \\ -1 \end{pmatrix}
+\end{align}
+
+\subsection{}
+$\boldsymbol{\omega}_{b} = (1,0)^T, \boldsymbol{\omega}_{c} = (1.1,-1)^T$.
+The difference of $\Delta \boldsymbol{\omega} = \boldsymbol{\omega}_{c} - \boldsymbol{\omega}_{b} =(\epsilon,-1)^T = (0.1,-1)^T$ 
+
+
+\section{Linear Regression with Regularization}
+\subsection{}
+$\textbf{Claim 1} : \boldsymbol{A}$ is positive semi-definite.
+
+\noindent\textbf{proof}
+
+$\boldsymbol{A}$ is trivially symmetry matrix. $\forall \boldsymbol{v} \in \mathbb{R}^n, \boldsymbol{v}^T \boldsymbol{A} \boldsymbol{v} = \sum_n \boldsymbol{v}^T \overline{\boldsymbol{x}^{(n)}} \cdot \overline{\boldsymbol{x}^{(n)}}^T \boldsymbol{v} = \sum_n \lVert\boldsymbol{v}^T \overline{\boldsymbol{x}^{(n)}} \rVert^2 \ge 0._\blacksquare$
+\\
+
+\noindent$\textbf{Claim 2} : \boldsymbol{A}\boldsymbol{x} = \lambda \boldsymbol{x} \iff \boldsymbol{A}^{-1}\boldsymbol{x} = \lambda^{-1} \boldsymbol{x}$ where $\lambda \ne 0$ and $\boldsymbol{A}$ is invertible. 
+
+\noindent\textbf{proof}
+
+$\boldsymbol{A}\boldsymbol{x} = \lambda \boldsymbol{x} \iff \boldsymbol{A}^{-1}\boldsymbol{A}\boldsymbol{x} = \lambda \boldsymbol{A}^{-1}\boldsymbol{x} \iff \lambda^{-1} \boldsymbol{x} = \boldsymbol{A}^{-1} \boldsymbol{x}._\blacksquare$
+\\
+
+\noindent
+Let S(A) be the set of all eigenvalues of A.
+\begin{equation}
+    S(\boldsymbol{A}) \equiv \left\{\lambda_i | \text{for some } \boldsymbol{x} \in \mathbb{R},\; \boldsymbol{A}\boldsymbol{x} = \lambda_i \boldsymbol{x} \right\}
+\end{equation}
+
+\noindent
+$\forall \tilde{\lambda} \in S(\boldsymbol{A}+\lambda \boldsymbol{I}) \text{ s.t. } (\boldsymbol{A}+\lambda I)\boldsymbol{x} = \tilde{\lambda}\boldsymbol{x}.$ 
+
+\noindent
+By multiplying $\boldsymbol{x}^T, \boldsymbol{x}^T (\boldsymbol{A} + \lambda \boldsymbol{I}) \boldsymbol{x} =  \boldsymbol{x}^T \boldsymbol{A} \boldsymbol{x} + \lambda = \tilde{\lambda} \ge \lambda.(\because \boldsymbol{A} \text{ is positive semi-definite.})$
+
+\noindent
+This implies that $\min(S(\boldsymbol{A}+\lambda \boldsymbol{I})) \ge \lambda$. Equivalently,due to the \textbf{Claim 2}, this also means that $\max(S((\boldsymbol{A} + \lambda I)^{-1})) \le \lambda^{-1}$. By noticing that $\max(S((\boldsymbol{A} + \lambda I)^{-1})) = \rho((\boldsymbol{A} + \lambda I)^{-1})$, the proof is done. Note that for the equality, $\boldsymbol{A}\boldsymbol{x} = \textbf{0}$ must have nontrivial solution. 
+
+\subsection{}
+For both problems, the $\boldsymbol{A} + \lambda \boldsymbol{I}$ is following. 
+
+\begin{equation}
+    \boldsymbol{A} + \lambda \boldsymbol{I} = \begin{pmatrix}
+        2 + \lambda & \epsilon \\ \epsilon & \epsilon^2 + \lambda
+    \end{pmatrix}
+    \label{eqn:A}
+\end{equation}
+
+Since (\ref{eqn:A}) is invertible, one can get $\boldsymbol{\omega_b}, \boldsymbol{\omega_c}$. 
+
+\begin{align*}
+    \boldsymbol{\omega_b} &= \frac{1}{(1+\lambda)\epsilon^2 + \lambda(\lambda + 2)} \cdot \begin{pmatrix}
+        \epsilon^2 + \lambda & - \epsilon \\ - \epsilon & 2 + \lambda
+    \end{pmatrix} \cdot \begin{pmatrix}
+        2 \\ \epsilon
+    \end{pmatrix}\\
+    &= \frac{1}{(1+\lambda)\epsilon^2 + \lambda(\lambda + 2)} \cdot \begin{pmatrix}
+        \epsilon^2 + 2\lambda \\ \epsilon\lambda
+    \end{pmatrix} \\
+    &= \begin{pmatrix}
+        0.973\\ 0.044
+    \end{pmatrix}
+\end{align*}
+
+\begin{align*}
+    \boldsymbol{\omega_c} &= \frac{1}{(1+\lambda)\epsilon^2 + \lambda(\lambda + 2)} \cdot \begin{pmatrix}
+        \epsilon^2 + \lambda & - \epsilon \\ - \epsilon & 2 + \lambda
+    \end{pmatrix} \cdot \begin{pmatrix}
+        2 + \epsilon \\ \epsilon
+    \end{pmatrix}\\
+    &= \frac{1}{(1+\lambda)\epsilon^2 + \lambda(\lambda + 2)} \cdot \begin{pmatrix}
+        \epsilon^3 + \epsilon^2 +\lambda \epsilon + 2 \lambda \\ -\epsilon^2 + \lambda\epsilon
+    \end{pmatrix} \\
+    &= \begin{pmatrix}
+        1.026 \\ -0.044
+    \end{pmatrix}
+\end{align*}
+
+Furthemore, $\Delta \boldsymbol{\omega} = \boldsymbol{\omega_c} - \boldsymbol{\omega_b}$ can be obtained. 
+
+\begin{equation}
+    \Delta \boldsymbol{\omega} = \frac{1}{(1+\lambda)\epsilon^2 + \lambda(\lambda + 2)} \begin{pmatrix}
+        \epsilon^3 + \lambda\epsilon \\ -\epsilon^2
+    \end{pmatrix} = \begin{pmatrix}
+        0.0531 \\ -0.088
+    \end{pmatrix}
+\end{equation}
+
+\subsection{}
+One can notice that $\Delta \boldsymbol{\omega}$ with regularization is much smaller than $\Delta \boldsymbol{\omega}$ without regularization. This implies that regularization makes the parameters less variable. This can be verified by the following figure.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale = 0.5]{./figures/output.png}
+\end{figure}
+
+\section{LR with Regularization: A Probabilistic Perspective}
+
+
+
+\section{Logistic Regression}
 
 \end{document}
