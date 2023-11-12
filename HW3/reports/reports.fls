@@ -1105,6 +1105,10 @@ INPUT ./figures/output.png
 INPUT ./figures/output.png
 INPUT ./figures/output.png
 INPUT ./figures/output.png
+INPUT ./figures/output.png
+INPUT ./figures/output.png
+INPUT ./figures/output.png
+INPUT ./figures/output.png
 INPUT reports.aux
 INPUT ./reports.out
 INPUT ./reports.out
