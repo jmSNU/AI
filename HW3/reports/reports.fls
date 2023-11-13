@@ -1100,10 +1100,11 @@ INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/wasy/wasyb10.tfm
 INPUT /usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT ./figures/output.png
-INPUT ./figures/output.png
-INPUT ./figures/output.png
-INPUT ./figures/output.png
+INPUT ./figures/output2.png
+INPUT ./figures/output2.png
+INPUT ./figures/output2.png
+INPUT ./figures/output2.png
+INPUT ./figures/output2.png
 INPUT ./figures/output.png
 INPUT ./figures/output.png
 INPUT ./figures/output.png
@@ -1113,6 +1114,7 @@ INPUT reports.aux
 INPUT ./reports.out
 INPUT ./reports.out
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT /usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb
