@@ -117,7 +117,7 @@ Let S(A) be the set of all eigenvalues of A.
 \end{equation}
 
 \noindent
-$\forall \tilde{\lambda} \in S(\boldsymbol{A}+\lambda \boldsymbol{I}) \text{ s.t. } (\boldsymbol{A}+\lambda I)\boldsymbol{x} = \tilde{\lambda}\boldsymbol{x}.$ 
+For $\forall \tilde{\lambda} \in S(\boldsymbol{A}+\lambda \boldsymbol{I}), (\boldsymbol{A}+\lambda I)\boldsymbol{x} = \tilde{\lambda}\boldsymbol{x}.$ 
 
 \noindent
 By multiplying $\boldsymbol{x}^T, \boldsymbol{x}^T (\boldsymbol{A} + \lambda \boldsymbol{I}) \boldsymbol{x} =  \boldsymbol{x}^T \boldsymbol{A} \boldsymbol{x} + \lambda = \tilde{\lambda} \ge \lambda.(\because \boldsymbol{A} \text{ is positive semi-definite.})$
@@ -176,29 +176,38 @@ Furthemore, $\Delta \boldsymbol{\omega} = \boldsymbol{\omega_c} - \boldsymbol{\o
 \end{equation}
 
 \subsection{}
-One can notice that $\Delta \boldsymbol{\omega}$ with regularization is much smaller than $\Delta \boldsymbol{\omega}$ without regularization. This implies that regularization makes the parameters less variable with respect to small noise in input data. This can be verified by the following figure.
+One can notice that $\lVert\Delta \boldsymbol{\omega}\rVert$ with regularization is much smaller than $\lVert\Delta \boldsymbol{\omega}\rVert$ without regularization. This implies that regularization makes the parameters less variable with respect to small noise in input data. This can be verified by the following figure.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale = 0.7]{./figures/output.png}
+    \includegraphics[scale = 0.5]{./figures/output2.png}
     \caption{The linear regression result of (b) and (c)}
+    \label{fig:regularization}
 \end{figure}
 
+According to the figure \ref{fig:regularization}, the linear regression with regularization tends to be stable for the noised sample (c) and unnoised sample (b). However, the regression without the regularization has more fluctuation for noised sample. 
+
 \section{LR with Regularization: A Probabilistic Perspective}
+The Gaussian prior implies the following.
 \begin{align*}
-    \text{Pr}(\boldsymbol{\omega}) &= \mathcal{N}(\boldsymbol{0},\frac{1}{\lambda} \boldsymbol{I}) \\ &= \frac{\lambda^{N/2}}{2\pi^{N/2}}\exp\left({-\frac{1}{2}\boldsymbol{\omega}^T \lambda \boldsymbol{\omega}}\right)
+    \text{Pr}(\boldsymbol{\omega}) = \mathcal{N}(\boldsymbol{0},\frac{1}{\lambda} \boldsymbol{I}) = \frac{\lambda^{N/2}}{2\pi^{N/2}}\exp\left({-\frac{1}{2}\boldsymbol{\omega}^T \lambda \boldsymbol{\omega}}\right)
 \end{align*}
+
+\noindent
+In general, the $\epsilon^{(i)}$ also tends to have the Gaussian distribtuion. Therefore, by substituting $\epsilon^{(i)}$ to $t^{(i)} - \boldsymbol{\omega}^T \boldsymbol{x}^{(i)}$, $\text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right)$ is possible to be dervied as follow.
 
 \begin{align*}
     &t^{(i)} = \boldsymbol{\omega}^T \boldsymbol{x}^{(i)} + \epsilon^{(i)} \And
     \text{Pr}(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left( -{\epsilon^{(i)}}^2/2\sigma^2\right) \\ &\Rightarrow \text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)})^2/2\sigma^2\right)
 \end{align*}
 
+By producting $\text{Pr}\left(t^{(i)}\;|\;\boldsymbol{\omega}, \boldsymbol{x}^{(i)}\right)$ for all possible $i$, one can be able to get $\text{Pr}(\boldsymbol{t}\;|\; \boldsymbol{\omega}^T \boldsymbol{x}^{(i)})$.
+
 \begin{align*}
-    \text{Pr}(\boldsymbol{t}\;|\; \boldsymbol{\omega}^T \boldsymbol{x}^{(i)}) &= \prod_{i=1}^N\text{Pr}(t^{(i)}\;|\;\boldsymbol{\omega}^T, \boldsymbol{x}) \\ &= \frac{1}{2\pi^{N/2}\sigma^N} \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^N (t^{(i)} - \boldsymbol{\omega}^T \boldsymbol{x}^{(i)})^2\right)
+    \text{Pr}(\boldsymbol{t}\;|\; \boldsymbol{\omega}^T \boldsymbol{x}^{(i)}) = \prod_{i=1}^N\text{Pr}(t^{(i)}\;|\;\boldsymbol{\omega}^T, \boldsymbol{x}) = \frac{1}{(2\pi)^{N/2}\sigma^N} \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^N (t^{(i)} - \boldsymbol{\omega}^T \boldsymbol{x}^{(i)})^2\right)
 \end{align*}
 
-From the discussion above, the posterior probability is following. 
+From the discussion above and Bayes' rule, the posterior probability is following. 
 
 \begin{equation}
     \text{Pr}(\boldsymbol{\omega}\;|\;\boldsymbol{x},\boldsymbol{t}) \propto \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^N \left(t^{(i)} - \boldsymbol{\omega}^T\boldsymbol{x}^{(i)} \right)^2 - \frac{\lambda}{2} \boldsymbol{\omega}^T\boldsymbol{\omega}\right)
@@ -220,7 +229,7 @@ One can see from (\ref{eqn:logPos}) that maximizing logarithm of posterior is eq
     \label{eqn:MLE}
 \end{equation}
 
-To minimize (\ref{eqn:MLE}), one can differentiate it about $\omega$ to find the $\omega_0$ that makes the derivative zero. By denoting $P^{(n)} = ({1+e^{\boldsymbol{\omega}^T \boldsymbol{x}^{(n)}}})^{-1} = \sigma(\boldsymbol{\omega}^T\boldsymbol{x}^{(n)})$
+To minimize (\ref{eqn:MLE}), one can differentiate it about $\boldsymbol{\omega}$ to find the $\boldsymbol{\omega_0}$ that makes the derivative zero. By denoting $P^{(n)} = ({1+e^{\boldsymbol{\omega}^T \boldsymbol{x}^{(n)}}})^{-1} = \sigma(\boldsymbol{\omega}^T\boldsymbol{x}^{(n)})$
 
 
 \begin{align*}
@@ -249,7 +258,7 @@ In this section, I will briefly introduce my KNN algorithm. I have implemented t
 
 \subsection{predict\_knn}
 
-To handle potential errors in \textbf{load\_knn\_data()}, I consistently used a \textbf{try-except} clause for each implemented function. It's important to note that the implementation of these functions may not be consistent, as \textbf{predict\_knn()} is called not only in \textbf{eval\_knn()} but also in \textbf{main()}. In \textbf{main()}, the input parameters are in the form of tuples, while in \textbf{eval\_knn()}, they are in the form of 2-dimensional numpy arrays.
+To handle potential errors in \textbf{load\_knn\_data()}, I consistently used a \textbf{try-except} clause for each implemented function. It's important to note that the usage of these functions may not be consistent, as \textbf{predict\_knn()} is called not only in \textbf{eval\_knn()} but also in \textbf{main()}. In \textbf{main()}, the input parameters are in the form of tuples, while in \textbf{eval\_knn()}, they are in the form of 2-dimensional numpy arrays.
 
 Now, let's discuss \textbf{predict\_knn()}. After the \textbf{try-except} clause, I defined \textbf{dist\_arr}, which contains the square of the Euclidean norm from $x$ to every sample in $inputs$. Subsequently, I sorted the index of \textbf{dist\_arr} with respect to \textbf{dist\_arr} and obtained the index of first $k\_neighbors$ features that are the closest $k\_neighbors$ samples to $x$. Next, from that index, I retrieved the labels of $x$'s neighbors. Finally, \textbf{np.unique()} enabled me to find the labels of $x$'s neighbors and the count of each label. I used the \textbf{argmax()} function to get the label that appeared most frequently among the $k\_neighbors$ samples.  Due to the characteristics of \textbf{argmax()} function, the formost label is returned for the tied label.
 
@@ -259,7 +268,7 @@ This function simply checks whether the given input data points are classified c
 
 \subsection{cross\_validation\_knn}
 
-I treated a portion of the training dataset as a validation set, with the portion determined by $k\_folds$. By factorizing the training dataset into $k\_folds$, I obtained the average performance (or accuracy) of the KNN results for each hyperparameter. This process was repeated until every given hyperparameter was evaluated.
+I treated a portion of the training dataset as a validation set, with the portion determined by $k\_folds$. By factorizing the training dataset into $k\_folds$ sets, I obtained the average performance (or accuracy) of the KNN results for each hyperparameter. This process was repeated until every given hyperparameter was evaluated.
 
 \subsection{Results}
 
