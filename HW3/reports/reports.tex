@@ -258,7 +258,7 @@ In this section, I will briefly introduce my KNN algorithm. I have implemented t
 
 \subsection{predict\_knn}
 
-To handle potential errors in \textbf{load\_knn\_data()}, I consistently used a \textbf{try-except} clause for each implemented function. It's important to note that the implementation of these functions may not be consistent, as \textbf{predict\_knn()} is called not only in \textbf{eval\_knn()} but also in \textbf{main()}. In \textbf{main()}, the input parameters are in the form of tuples, while in \textbf{eval\_knn()}, they are in the form of 2-dimensional numpy arrays.
+To handle potential errors in \textbf{load\_knn\_data()}, I consistently used a \textbf{try-except} clause for each implemented function. It's important to note that the usage of these functions may not be consistent, as \textbf{predict\_knn()} is called not only in \textbf{eval\_knn()} but also in \textbf{main()}. In \textbf{main()}, the input parameters are in the form of tuples, while in \textbf{eval\_knn()}, they are in the form of 2-dimensional numpy arrays.
 
 Now, let's discuss \textbf{predict\_knn()}. After the \textbf{try-except} clause, I defined \textbf{dist\_arr}, which contains the square of the Euclidean norm from $x$ to every sample in $inputs$. Subsequently, I sorted the index of \textbf{dist\_arr} with respect to \textbf{dist\_arr} and obtained the index of first $k\_neighbors$ features that are the closest $k\_neighbors$ samples to $x$. Next, from that index, I retrieved the labels of $x$'s neighbors. Finally, \textbf{np.unique()} enabled me to find the labels of $x$'s neighbors and the count of each label. I used the \textbf{argmax()} function to get the label that appeared most frequently among the $k\_neighbors$ samples.  Due to the characteristics of \textbf{argmax()} function, the formost label is returned for the tied label.
 
@@ -268,7 +268,7 @@ This function simply checks whether the given input data points are classified c
 
 \subsection{cross\_validation\_knn}
 
-I treated a portion of the training dataset as a validation set, with the portion determined by $k\_folds$. By factorizing the training dataset into $k\_folds$, I obtained the average performance (or accuracy) of the KNN results for each hyperparameter. This process was repeated until every given hyperparameter was evaluated.
+I treated a portion of the training dataset as a validation set, with the portion determined by $k\_folds$. By factorizing the training dataset into $k\_folds$ sets, I obtained the average performance (or accuracy) of the KNN results for each hyperparameter. This process was repeated until every given hyperparameter was evaluated.
 
 \subsection{Results}
 
